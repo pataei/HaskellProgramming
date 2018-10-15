@@ -1,7 +1,5 @@
 module Ch3 where
 
-import Prelude hiding (reverse)
-
 -- area d = pi * (r * r)
 -- r = d / 2
 -- error: variable not in scope
@@ -22,9 +20,11 @@ thirdLetter s = s !! 2
 
 letterIndex i s = s !! i
 
-reverse :: String -> String
-reverse s = undefined
+reverse' :: String -> String
+reverse' s = concat [awesome, is, " ", curry]
+  where curry   = take 5 s 
+        is      = egb 5 8 s
+        awesome = drop 9 s
 
--- work only for this input and output but try to write it in a generic way
 -- "curry is awesome"
 -- "awesome is curry"
