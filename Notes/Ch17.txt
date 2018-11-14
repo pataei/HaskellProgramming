@@ -1,0 +1,39 @@
+Ch17: Applicative
+
+Applicative: Monoidal functors
+Monoid: a means of mashing two values of the same type together
+Functor: func. application over some structure we don't want to think about
+
+class Functor f => Applicative f where
+pure :: a -> f a ~~> structural identity
+(<*>) :: f (a -> b) -> f a -> f b ~~> apply
+
+($) :: (a -> b) -> a -> b
+(<$>) :: Functor f => (a -> b) -> f a -> f b ~~> fmap
+(<*>) :: Applicative f => f (a -> b) -> f a -> f b ~~> tie-fighter
+fmap f x = pure f <*> x
+
+mappend :: Monoid a => a -> a -> a
+($) :: (a -> b) -> a -> b
+(<*>) :: Applicative f => f (a -> b) -> f a -> f b
+~~> we're bolting a monid onto a functor to be able to deal with funcs 
+embedded in additional structure. i.e. we're enriching func application 
+with the very structure we're previously mapping over with functor!
+e.g.: 
+[(*2), (*3)] <*> [4, 5]
+= [2*4, 2*5, 3*4, 3*5]
+= [8, 10, 12, 15]
+
+liftA :: Applicative f => (a -> b) -> f a -> f b
+liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
+liftA2 f a b = f <$> a <*> b
+
+instance Monoid a => Applicative ((,) a)
+~~> the func in the b position of the left tuple has been applied to the 
+value in the b position of the right tuple to produce a result. that func 
+application is why we don't need a monoid instance on the b.
+e.g.: 
+("Woo", (+1)) <*> (" Hoo!", 0)
+= ("Woo Hoo!", 1)
+
+instance (Monoid a, Monoid b) => Monoid (a, b)
