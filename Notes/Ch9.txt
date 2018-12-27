@@ -1,0 +1,11 @@
+* list comprehension: [outputList | inputList, predicate]
+
+* prelude multiple line code:
+  :{ blah
+  :}
+
+* spine: the connective structure that ties the collection of values together.
+* nonstrict eval: the list isn't constructed untile it's consumed, nothing is evaluated until it must be.
+* sprint command: prints variables and you can see what has been evaluated already, with the underscore representing expressions that haven't been evaluated.
+* normal form: expressions are fully evaluated.
+* weak head normal form: expressions are only evaluated as far as is necessary to reach a data constructor.
