@@ -88,9 +88,10 @@ capFirst = toUpper . head
 cipher :: Int -> String -> String
 cipher i s = map chr code
   where 
+    index = mod i 26
     nums = map ord s
-    nums' = map (\x -> x-96) nums
-    code = map (\x -> (mod (x+i) 26) + 96) nums'
+    nums' = map (\x -> x-97) nums
+    code = map (\x -> (mod (x+index) 26) + 97) nums'
 
 
 decipher :: Int -> String -> String
