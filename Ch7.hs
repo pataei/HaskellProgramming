@@ -31,4 +31,8 @@ roundTrip' :: (Show a, Read a) => a -> a
 roundTrip' = read . show 
 
 roundTrip'' :: (Show a, Read b) => a -> b
-roundTrip'' x = read ((show x) :: String)
+roundTrip'' x = (read ((show x) :: String))
+
+-- here's how you call it:
+-- (roundTrip'' 435) :: Int
+-- roundTrip'' "lsdkf" :: String
