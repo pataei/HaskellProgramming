@@ -84,6 +84,7 @@ capFirst :: String -> Char
 capFirst = toUpper . head
 -- capFirst s = toUpper $ head s
 
+-- doesn't work right!!
 cipher :: Int -> String -> String
 cipher i s = map chr code
   where 
