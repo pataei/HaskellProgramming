@@ -95,3 +95,26 @@ cipher i s = map chr code
 
 decipher :: Int -> String -> String
 decipher i = cipher (-i) 
+
+rev :: [a] -> [a]
+rev [] = []
+rev (x:xs) = rev xs ++ [x]
+
+squish :: [[a]] -> [a]
+squish = squishMap id
+-- squish [] = []
+-- squish (x:xs) = x ++ squish xs
+
+squishMap :: (a -> [b]) -> [a] -> [b]
+squishMap f (x:xs) = f x ++ squishMap f xs
+squishMap _ [] = []
+
+maximBy :: (a -> a -> Ordering) -> [a] -> a
+maximBy f (x:y:xs) 
+  | f x y == GT = maximBy f (x:xs)
+  -- | f x y == EQ = maxim (x:xs)
+  | otherwise = maximBy f (y:xs)
+maximBy f [x] = x
+
+maxim :: Ord a => [a] -> a
+maxim = maximBy compare
