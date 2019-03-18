@@ -1,7 +1,10 @@
 module Ch10 where
 
--- why doesn't this work? p366
+-- why doesn't this work:
 -- foldl ((++) . show) "" [1..3]
+-- b ~ String
+-- t a ~ [Int]
+-- f ~ Int -> String -> String
 
 import Data.Time
 
@@ -37,18 +40,16 @@ sumDb db = foldr (+) 0 nums
   where
     nums = filterDbNumber db
 
--- STUPID!! COME BACK TO IT LATER!!
--- avgDb :: [DatabaseItem] -> Double
--- avgDb db = fromIntegral $ s / fromRational (length nums)
---   where 
---     s = sumDb db
---     nums = filterDbNumber db
+avgDb :: [DatabaseItem] -> Double
+avgDb db = fromIntegral s / fromIntegral (length nums)
+  where 
+    s = sumDb db
+    nums = filterDbNumber db
 
 fibs = 1 : scanl (+) 1 fibs
 
--- NOT WORKING!!!
 fac :: [Int]
-fac = 1 : scanl (*) 1 fac
+fac = scanl (*) 1 [2..]
 
 stops = "pdtkg"
 vowels = "aeiou"
@@ -93,7 +94,7 @@ squishAgain = squishMap id
 
 myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
 myMaximumBy =  undefined
--- myMaximumBy f = foldr ()
+-- myMaximumBy f = foldr () 
 
 -- myMaximumBy (\_ _ -> GT) [1..10] ==> 1
 -- myMaximumBy (\_ _ -> LT) [1..10] ==> 10

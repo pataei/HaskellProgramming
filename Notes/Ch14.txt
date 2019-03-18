@@ -1,0 +1,18 @@
+tow categories of testing: 1) unit testing 2) property testing
+
+unit testing tests the smalles atomic units of software independently of one 
+another.
+
+spec testing is a newer version of unit testing. it tests specific functions 
+independently and asks you to assert that when given the declared input, the 
+result of the operation will be equal to the desired result.
+
+spec vs unit: spec is written in terms of assertions that are in human-readable 
+lang.
+
+property tests test the formal properties of programs wo requiring formal proofs 
+by allowing you to express a truth-valued, universally quantified function, which 
+will then be checked against randomly generated inputs.
+
+* in order to see what a library provides you with >> :browse
+

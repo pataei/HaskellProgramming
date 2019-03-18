@@ -1,0 +1,10 @@
+type alias: type synonym
+
+type or data constants: type or data constructors that take no arguments
+
+data X a = X --> a is a phantom type, it means the type argument a is 
+phantom or has no witness
+
+kinds: types of types, or types one level up. sth is a fully applied 
+concrete type when it is represented as *. when it's * -> * is still
+waiting to be applied.
