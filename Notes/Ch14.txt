@@ -16,3 +16,8 @@ will then be checked against randomly generated inputs.
 
 * in order to see what a library provides you with >> :browse
 
+-- fmap :: Functor f => (a -> b) -> f a -> f b
+-- sequence :: (Traversable t, Monad m) => t (m a) -> m (t a)
+
+* very neat idea to reverse Map k a to Map a k:
+-- foldWithKey insert empty originalMap

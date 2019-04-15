@@ -1,0 +1,23 @@
+Ch16: Functor
+
+* in all type classes we abstract out acommon pattern, make certain it follows some laws, give it a name.
+
+* functor is all about a patter of mapping over structure.
+
+* some notes on IO: 
+getLine is not a string but rather a way to obtain a string. IO 
+doesn't guarantee that effects will be performed, but it does mean 
+that they could be performed.
+
+* functors are unique to a datatype (unlike monoids which we could 
+have multiple monoids for a data type and solve the problem by 
+wrapping the data type in a new type for each of them). this is 
+because of parametricity, in part because arguments to type 
+constructors are applied in order of definition.
+
+higher-kinded polymorphism: poly which has a type variable 
+abstracting over types of a higher kind. e.g.: functor, or wrap.
+
+lifting: we can lift a function into a context.
+         we lift a function over some layer of structure to apply   
+           it to.

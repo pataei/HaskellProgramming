@@ -1,0 +1,64 @@
+Ch15: Monoid, Semigroup
+
+algebra: describes abstration patterns that have well-defined, 
+lawful reps in mathematics, i.e., they have one or more operations 
+and the set they operate over.
+
+algebra in mathematics: the study of mathematical symbols and the 
+rules governing their manipulation. it's differentiated from 
+arithmetic by its use of abstractions such as variables.
+
+* in haskell these algebras can be defined by type classes, the type class defines the set of operations. the operations over a
+set, (i.e. this set is the type operations are for in haskell).
+
+Monoid: a binary associative (R a (R b c) = R (R a b) c) operation with an identity (R a i = a).
+e.g.: mappend (<>), mempty
+
+Pattern of monoids: types that have binary funcitons that let you 
+join things together in accordance with the laws of associativity, 
+along with an identity value that will return the other argument 
+unmodified.
+
+* while in mathematics the monoid of numbers is summation, there's 
+not a clear reason why it can't be multiplication. both operations 
+are monoidal (binary, associative, having an identity value), but 
+each type should only have one unique instance for a given type 
+class.
+
+* to resolve the conflict of what is the monoid of numbers, we have 
+the Sum and Product newtypes to wrap numeric vlaues and signal wich 
+Monoid instance we want. 
+e.g.: mappend (Sum 1) (Sum 3) = Sum {getSum = 6}
+
+* monoids are stongly associated with the concept of folding or 
+catamorphism.
+
+* laws make up what algebras are!
+
+* Monoid is different from other typeclasses in that many datatypes 
+have more than one valid monoid. e.g.: numbers. one solution is to 
+use newtypes to tell them apart. In these cases, the monoidal 
+operation is less about combining the values and more about finding 
+a summary value for the set. i.e. mappending is less about 
+combining and more about condensing and reducing.
+
+* an identity is a value with a special relationship with an 
+operation: it turns the operation into the identity function.
+
+* writing orphan instances should be avoided at all costs. an 
+orphan instance is when an inst is defined for a datatype and type 
+class but not in the same module as either the declaration of the 
+type class or the datatype. if you don't own the typeclass or the 
+datatype, newtype it. if you want orphan instance so that you can 
+have multiple instances for the same type you still want to use 
+newtype. 
+
+* avoidance of orphan instances is more strictly adhered to among 
+library authors rather than application developers, although it's 
+no less important in applicaitons.
+
+* semigroup is a weaker algebra than monoid. 
+e.g.: nonempty list data type.
+
+* remove the associativity and you get magma. i.e. magma is even 
+weaker than semigroup.
