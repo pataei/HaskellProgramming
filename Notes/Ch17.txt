@@ -37,3 +37,30 @@ e.g.:
 = ("Woo Hoo!", 1)
 
 instance (Monoid a, Monoid b) => Monoid (a, b)
+
+The Identity type is a way to introduce structure without changing the sem.
+
+The Constant type provides structure as well as throwing away a function 
+application.
+
+Applicative laws:
+1. Identity: 
+    pure id <*> v = v
+2. Composition:
+    pure (.) <*> u <*> v <*> w = u <*> (v <*> w)
+    i.e.: the result of composing your functions first and the applying them and the 
+    result of applying the function first then composing them should be the same.
+3. homomorphism:
+    pure f <*> pure x = pure $ f x
+    i.e.: the effect of applying a func that is embedded in some structure to a value 
+    that is embedded in some structure should be the same as applying a func to a value 
+    wo affecting any outside structure.
+4. Interchange:
+    u <*> pure y = pure ($ y) <*> u
+    e.g.: (+ 2) <*> pure 2 = pure ($ 2) <*> Just (+ 2)
+          ($ 2) :: Num a => (a -> b) ->b
+          Just (+ 2) :: Num a => Maybe (a -> a)
+          ($ 2) == \f -> f 2
+          ($) :: (a -> b) -> a -> b
+
+homomorphism: structure-preserving map bw two algebraic structures.
