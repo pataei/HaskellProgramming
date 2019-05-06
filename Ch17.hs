@@ -47,7 +47,7 @@ instance Applicative Identity where
 newtype Constant a b = Constant {getConstant :: a}
   deriving (Show, Eq, Ord)
 
--- page 706
+
 instance Functor (Constant a) where
   fmap _ (Constant x) = Constant x
 
@@ -124,9 +124,27 @@ instance Functor ZipList' where
 instance Applicative ZipList' where
   pure x = ZipList' []
   -- pure (Cons x xs) = ZipList' (Cons x xs)
-  ZipList' f <*> (ZipList' xs) = ZipList' $ f <*> xs
+  ZipList' f <*> (ZipList' xs) = ZipList' $ zipWith (\x y -> x y) f xs
+-- f <*> xs
+
+ziplistex = ZipList' [(+9),(*2),(+8)]
+ziplistex' = ZipList' [1..3]
 
 
+data Valid err a = Fail err
+                 | Succ a 
+  deriving (Eq, Show)
+
+instance Functor (Valid e) where
+  fmap f (Fail err) = Fail err
+  fmap f (Succ a) = Succ $ f a
+
+instance Monoid e => Applicative (Valid e) where
+  pure _ = Fail mempty
+  Fail f <*> Fail e = Fail $ mappend f e
+  Fail f <*> Succ a = Fail mempty
+  Succ f <*> Fail e = Fail mempty
+  Succ f <*> Succ a = Succ $ f a
 
 
 
