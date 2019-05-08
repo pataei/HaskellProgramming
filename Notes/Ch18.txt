@@ -64,3 +64,18 @@ Nothing
 Prelude> Just 1 >>= undefined
 *** Exception
 
+ap :: Monad m => m (a -> b) -> m a -> m b
+ap = (<*>)
+
+we can't make a monad for validation that accumulates the errors like the 
+applicative does. the monad instance for Validation would be identical to 
+Either's monad instance.
+
+MONAD LAWS LATER!!!
+
+fmap id = id
+fmap f . fmap g = fmap (f.g)
+
+mcomp :: Monad m => (b -> m c) -> (a -> m b) -> a -> m c
+mcomp f g a = g a >>= f
+(>=>) :: Monad m => (a -> m b) -> (b -> m c) -> a -> m c

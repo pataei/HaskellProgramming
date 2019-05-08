@@ -1,6 +1,6 @@
 module Ch18 where
 
-import Control.Monad (join)
+import Control.Monad (join, ap)
 
 bind :: Monad m => m a -> (a -> m b) -> m b
 bind x f = join $ fmap f x
