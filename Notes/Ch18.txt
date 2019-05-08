@@ -1,2 +1,66 @@
 Ch18: Monad
 
+monad: applicative functors
+
+class Applicative m => Monad m where
+  (>>=) :: m a -> (a -> m b) -> m b
+  (>>) :: m a -> m b -> m b ---> is called sequence. discards the result of the first monadic action although applies its effect
+  return :: a -> m a
+
+monad stronger than applicative, applicative stronger than functor. you 
+can derive applicative and functor in terms of monad:
+fmap f xs = xs >>= return . f
+
+dependency chain: Functor -> Applicative -> Monad
+
+the diff of monad compared to functor is that after applying a 
+function wrapped in a structure monads discard one layer of the structure 
+but functors don't.
+
+monad in a sense is a generalization of concat :: [[a]] -> [a]
+
+join :: Monad m => m (m a) -> m a
+
+monad isn't:
+ - impure, monadic funcs are pure funcs
+ - an embedded lang for imperative programming
+ - a value
+ - about strictness. the monadic operations of bind and return are 
+   nonstrict
+
+liftM :: Monad m => (a -> b) -> m a -> m b
+liftM = liftA = fmap
+
+zipWith is liftA2 of liftM2 specialized to lists and they have different behaviors although the types are the same.
+
+do blah 
+   n <- mlah
+   flah n
+==
+blah >>
+mlah >>=
+\n -> flah n
+
+you can write this by applicative:
+do a <- f
+   b <- g
+   c <- h
+   return (a,b,c)
+
+but you cannot write this with applicative, you need a monad:
+do a <- f n
+   b <- g a
+   c <- h b
+   return (a,b,c)
+
+maybe applicative vs. myabe monad:
+- maybe applicative, each maybe computation fails or succeeds 
+  independently of each other.
+- with maybe monad, computations contributing to the final result can 
+  choose to return nothing based on previous computations.
+
+Prelude> Nothing >>= undefined
+Nothing
+Prelude> Just 1 >>= undefined
+*** Exception
+
