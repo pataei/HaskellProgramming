@@ -33,6 +33,58 @@ instance Monad (Sum a) where
   Fst x >>= f = Fst x
   Snd x >>= f = f x
 
+data Nope a = NopeDotJpg 
 
+instance Functor Nope where
+  fmap _ _ = NopeDotJpg
 
+instance Applicative Nope where
+  pure _ = NopeDotJpg
+  _ <*> _ = NopeDotJpg
 
+instance Monad Nope where
+  return = undefined
+  (>>=) = undefined
+
+data PhbtEither b a = Left a 
+                    | Right b
+
+instance Applicative (PhbtEither b) where
+  pure x = Left x
+  
+
+instance Monad (PhbtEither b) where
+  return = undefined
+  (>>=) = undefined
+
+data Identity a = Identity a
+  deriving (Eq, Show, Ord)
+
+instance Functor Identity where
+  fmap f (Identity x) = Identity $ f x
+
+instance Applicative Identity where
+  pure = Identity 
+  Identity f <*> Identity x = Identity $ f x
+
+instance Monad Identity where
+  return = pure
+  Identity x >>= f = Identity $ f x
+
+data List a = Nil | Cons a (List a)
+
+instance Functor List where
+  fmap f Nil = Nil
+  fmap f (Cons x l) = Cons (f x) $ fmap f l
+
+instance Applicative List where
+  pure x = Cons x Nil
+  fs <*> xs = undefined
+    -- fmap f x | f <- fs, x <- xs]
+
+instance Monad List where
+  return = pure
+  xs >>= f = undefined
+
+-- jm :: Monad m => m (m a) = m a
+-- jm ms = undefined
