@@ -1,6 +1,9 @@
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE FlexibleInstances #-}
 -- the flag is used for higher-kinded types in Nat
 module Ch16 where
+
+import GHC.Arr
 
 import Test.QuickCheck
 import Test.QuickCheck.Function
@@ -37,9 +40,11 @@ d :: Int -> String
 d = fmap ((return '1' ++ ) . show) (\x -> [x, 1..3])
 
 -- e :: IO Integer
--- e = let ioi = readIO "1" :: IO Integer
---         changed = fmap read $ ("123" ++) $ fmap show ioi
---     in fmap (*3) changed
+e = let ioi = readIO "1" :: IO Integer
+        changed :: IO Integer
+        -- changed = fmap read $ (fmap ("123" ++) $ fmap show ioi) 
+        changed = fmap read $ fmap (("123" ++) . show) ioi 
+    in fmap (*3) changed
 -- the original:
 -- e = let ioi = readIO "1" :: IO Integer
 --         changed = read ("123" ++) show ioi
@@ -188,5 +193,88 @@ data Tup a b = Tup a b
 newtype Flip f a b = Flip (f b a)
   deriving (Eq, Show)
 
--- instance Functor (Flip Tup a) where
---   fmap f (Flip (Tup a b)) = Flip $ Tup (f a) b
+instance Functor (Flip Tup a) where
+  fmap f (Flip (Tup a b)) = Flip $ Tup (f a) b
+
+newtype Mu f = InF {outF :: f (Mu f)}
+
+data D = D (Array Word Word) Int Int
+
+
+data Quant a b = Finance
+               | Desk a
+               | Bloor b
+
+instance Functor (Quant a) where
+  fmap f (Bloor x) = Bloor $ f x
+  fmap _ (Desk x) = Desk x
+  fmap _ Finance = Finance
+
+data K a b = K a 
+ 
+instance Functor (K a) where
+  fmap _ (K x) = K x
+
+-- newtype Flip f a b = Flip (f b a)
+--   deriving (Eq, Show)
+
+instance Functor (Flip K a) where
+  fmap f (Flip (K x)) = Flip (K (f x))
+
+data LiftItOut f a = LiftItOut (f a)
+
+-- instance Functor (LiftItOut f) where
+--   fmap g (LiftItOut x) = LiftItOut $ g x
+
+data Parappa f g a = DaWrappa (f a) (g a)
+
+instance Functor (Parappa f g) where
+  fmap = undefined
+
+data IgnoreOne f g a b = IgnoringSth (f a) (g b)
+
+instance Functor (IgnoreOne f g a) where
+  fmap = undefined
+
+data Notorious g o a t = Notorious (g o) (g a) (g t)
+
+instance Functor (Notorious g o a) where
+  fmap = undefined
+
+data List a = Nil | Cons a (List a)
+
+instance Functor List where
+  fmap f Nil = Nil
+  fmap f (Cons x l) = Cons (f x) $ fmap f l
+
+data GoatLord a = NoGoat
+                | OneGoat a
+                | MoreGoats (GoatLord a) (GoatLord a) (GoatLord a)
+
+instance Functor GoatLord where
+  fmap _ NoGoat = NoGoat
+  fmap f (OneGoat x) = OneGoat $ f x
+  fmap f (MoreGoats x y z) = MoreGoats (fmap f x) (fmap f y) (fmap f z)
+
+data TalkToMe a = Halt 
+                | Print String a
+                | Read (String -> a)
+
+instance Functor TalkToMe where
+  fmap _ Halt = Halt
+  fmap f (Print s x) = Print s $ f x
+  fmap f (Read g) = Read $ (f . g)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

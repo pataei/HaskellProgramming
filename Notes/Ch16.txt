@@ -2,7 +2,7 @@ Ch16: Functor
 
 * in all type classes we abstract out acommon pattern, make certain it follows some laws, give it a name.
 
-* functor is all about a patter of mapping over structure.
+* functor is all about a pattern of mapping over structure.
 
 * some notes on IO: 
 getLine is not a string but rather a way to obtain a string. IO 

@@ -146,10 +146,32 @@ instance Monoid e => Applicative (Valid e) where
   Succ f <*> Fail e = Fail mempty
   Succ f <*> Succ a = Succ $ f a
 
+data Pair a = Pair a a
 
+instance Functor Pair where
+  fmap f (Pair x y) = Pair (f x) (f y)
 
+instance Applicative Pair where
+  pure x = Pair x x
+  Pair f g <*> Pair x y = Pair (f x) (g y)
 
+data Three a b c = Three a b c
 
+instance Functor (Three a b) where
+  fmap f (Three x y z) = Three x y (f z)
+
+instance (Monoid a, Monoid b) => Applicative (Three a b) where
+  pure x = Three mempty mempty x
+  Three f g h <*> Three x y z = Three (mappend f x) (mappend g y) (h z)
+
+stops :: String 
+stops = "sldjflsa"
+
+vowels :: String
+vowels ="woeoi"
+
+combos :: [a] -> [b] -> [c] -> [(a, b, c)]
+combos = liftA3 ((,,))
 
 
 
