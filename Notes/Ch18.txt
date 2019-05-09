@@ -79,3 +79,11 @@ fmap f . fmap g = fmap (f.g)
 mcomp :: Monad m => (b -> m c) -> (a -> m b) -> a -> m c
 mcomp f g a = g a >>= f
 (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> a -> m c
+
+monad is a type class reifying an abst that is commonly used in haskell. 
+instead of an ordinary function of typ a to b you're functorially 
+applying a func which produces more strucutre itself and using join to 
+reduce the nested strucute that results.
+
+a monadic func is one which generates more structure after having been 
+lifted over monadic structure.
